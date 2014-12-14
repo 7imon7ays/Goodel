@@ -1,36 +1,69 @@
 // https://sites.google.com/site/scriptsexamples/custom-methods/gsunit
 
-function testModel () {
+function testManSearch () {
   var StudentModel = new Godel.Model("Students");
 
-  var wills = StudentModel.findWhere({ FirstName: "William" });
-  
-  GSUnit.assertArrayEqualsIgnoringOrder("Finds records by attribute",
+  var will = StudentModel.findWhere({ FirstName: "William", City: "SF" }),
+      wills = StudentModel.findWhere({ FirstName: "William" }); 
+
+  GSUnit.assertArrayEquals("Finds single record by attribute",
+                            will, {
+                              MustPing: true, Email: null,
+                              FirstName: 'William', LastName: 'Blake',
+                              City: 'SF', LastEmailed: null
+                             }
+                             );
+
+  GSUnit.assertArrayEqualsIgnoringOrder("Finds multiple records by attribute",
                                         wills,
                                         [{
-                                          MustPing: true, Email: "", FirstName: 'William',
-                                          LastName: 'Penn', City: 'NY', LastEmailed: ""
+                                          MustPing: true, Email: null, FirstName: 'William',
+                                          LastName: 'Penn', City: 'NY', LastEmailed: null
                                          },
                                          {
-                                          MustPing: true, Email: "", FirstName: 'William',
-                                           LastName: 'Blake', City: 'SF', LastEmailed: ""
+                                          MustPing: true, Email: null, FirstName: 'William',
+                                           LastName: 'Blake', City: 'SF', LastEmailed: null
                                          }
                                         ]
                                        );
-  
-  var joe = { FirstName: "Joseph", LastName: "Blogs", City: "LA" };
+}
+
+function testCreate () {
+  var StudentModel = new Godel.Model("Students"),
+      joe = { FirstName: "Joseph", LastName: "Blogs", City: "LA" };
+
   StudentModel.create(joe);
-  
+
   GSUnit.assertEquals("Adds records by attribute",
                       joe['FirstName'],
                       SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Students").getRange(22, 1).getValue()
                      );
 }
 
-function testQuery () {
-  var StudentModel = new Godel.Model("Students");
-  var results = StudentModel.table.query("William");
+function testNativeSearch () {
+  var StudentModel = new Godel.Model("Students"),
+      will = StudentModel.table.natFindWhere({ FirstName: "William", City: "SF" }),
+      wills = StudentModel.table.natFindWhere({ FirstName: "William" });
 
-  Logger.log(results);
+  GSUnit.assertArrayEquals("Finds single record by attribute",
+                            will, {
+                              MustPing: true, Email: null,
+                              FirstName: 'William', LastName: 'Blake',
+                              City: 'SF', LastEmailed: null
+                             }
+                             );
+
+  GSUnit.assertArrayEqualsIgnoringOrder("Finds multiple records by attribute",
+                                        wills,
+                                        [{
+                                          MustPing: true, Email: null, FirstName: 'William',
+                                          LastName: 'Penn', City: 'NY', LastEmailed: null
+                                         },
+                                         {
+                                          MustPing: true, Email: null, FirstName: 'William',
+                                           LastName: 'Blake', City: 'SF', LastEmailed: null
+                                         }
+                                        ]
+                                       );
 }
 

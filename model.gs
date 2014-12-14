@@ -1,34 +1,24 @@
 var Godel = {};
 
+/*
+ * Model takes the name of the sheet where the table is kept.
+ * It expects the first row to be a header with column names.
+ * Ie. it won't search that row
+ */
 Godel.Model = function (sheetName) {
   this.spreadSheet = SpreadsheetApp.getActiveSpreadsheet();
   this.table = new Godel.Table(this.spreadSheet.getSheetByName(sheetName));
 
   var headerRow = this.table.getRow(1);
   this.columns = headerRow.getValues()[0];
-
-  this.columnMap = null;
-  this._buildColumnMap();
 }
 
 Godel.Model.prototype.findWhere = function (searchHash) {
-  var matches = []
+  return this.table.findWhere(searchHash);
+}
 
-  for (var searchKey in searchHash) {
-    var columnIdx = this.columnMap[searchKey];
-    
-    for (var i = 1; i < 20; i++) {
-      var attribute = this.table.getCell(i, columnIdx).getValue();
-      if (searchHash[searchKey] == attribute) {
-        var row = this.table.getRow(i).getValues()[0],
-            record = this._getRecord(row);
-          
-        matches.push(record);
-      }
-    }
-
-  }
-  return matches;
+Godel.Model.prototype.findBy = function (searchHash) {
+  return this.table.findBy(searchHash);
 }
 
 Godel.Model.prototype.create = function (recordHash) {
@@ -44,30 +34,8 @@ Godel.Model.prototype.create = function (recordHash) {
       row = this.table.getRow(emptyRowIdx);
   
   row.setValues([newRecord]);
-}
+  this.table.numRows++;
 
-Godel.Model.prototype._getRecord = function (row) {
-  var record = {}, len = this.columns.length,
-      i;
-  
-  for (i = 0; i < len; i++) {
-    var column = this.columns[i];
-    record[column] = row[i];
-  }
-  
-  return record;
-}
-
-Godel.Model.prototype._buildColumnMap = function () {
-  var columnMap = {},
-      len = this.columns.length,
-      i;
-  
-  for (i = 0; i < len; i++) {
-    var column = this.columns[i];
-    columnMap[column] = i + 1;
-  }
-
-  this.columnMap = columnMap;
+  return newRecord;
 }
 
