@@ -7,8 +7,6 @@ function testManSearch () {
   var alf = Logician.findBy({ firstName: "Alfred", lastName: "Tarski" }),
       brits = Logician.findWhere({ country: "Britain" });
 
-  Logger.log(alf);
-  Logger.log(brits);
   GSUnit.assertObjectEquals("Finds single record by attribute",
                             alf, { lastName: "Tarski", firstName: "Alfred", country: "Poland" }
                              );
