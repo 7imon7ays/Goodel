@@ -105,7 +105,9 @@ Godel.Table.prototype.natFindBy = function (searchHash) {
 
   firstCell.setFormula(searchFormula);
 
-  if (firstCell.getValue() == "#N/A") return null;
+  var firstCellValue = firstCell.getValue();
+  if (firstCellValue == "#N/A") return null;
+  if (firstCellValue == "#ERROR!") throw new Error("Query error");
 
   var matchingRow = tempSheet.getRange(1, 1, 1, this.numColumns).getValues()[0];
   var matchingRecord = this._hashifyRow(matchingRow);
@@ -118,11 +120,11 @@ Godel.Table.prototype.natFindBy = function (searchHash) {
 Godel.Table.prototype.natFindWhere = function (searchHash) {
   // Same as above
   var tempSheetName = Math.random().toString(36),
-      spreadSheet = this.sheet.getParent(),
-      tempSheet = spreadSheet.insertSheet(tempSheetName),
+      spreadSheet = this.sheet.getParent();
+      var tempSheet = spreadSheet.insertSheet(tempSheetName),
       firstCell = tempSheet.getRange(1,1),
       searchResults = [];
-
+  
   var searchFormula = this._getSearchRange(),
       searchConditions = this._buildSearchConditions(searchHash)
   
@@ -131,7 +133,9 @@ Godel.Table.prototype.natFindWhere = function (searchHash) {
 
   firstCell.setFormula(searchFormula);
 
-  if (firstCell.getValue() == "#N/A") return results;
+  var firstCellValue = firstCell.getValue();
+  if (firstCellValue == "#N/A") return null;
+  if (firstCellValue == "#ERROR!") throw new Error("Query error");
 
   // If one or more records were found,
   // loop through them and add them to the results array

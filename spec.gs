@@ -1,7 +1,7 @@
 // GSUnit documentation:
 // https://sites.google.com/site/scriptsexamples/custom-methods/gsunit
 
-function testManSearch () {
+function testManualSearch () {
   var Logician = new Godel.Model("Logicians");
 
   var alf = Logician.findBy({ firstName: "Alfred", lastName: "Tarski" }),
@@ -31,20 +31,24 @@ function testCreate () {
                      );
 }
 
-function testNativeSearch () {
+function testNativeFindBy () {
   var Logician = new Godel.Model("Logicians"),
-      alf = Logician.table.natFindWhere({ firstName: "Alfred", lastName: "Tarski" }),
-      brits = Logician.table.natFindWhere({ county: "Britain" });
-
-  GSUnit.assertArrayEquals("Finds single record by attribute",
-                            alf, { firstName: 'Alfred', lastName: 'Tarski', country: 'Poland' }
+      alf = Logician.table.natFindBy({ firstName: "Alfred", lastName: "Tarski" });
+  GSUnit.assertObjectEquals("Finds single record by attribute",
+                            alf, { lastName: 'Tarski', firstName: 'Alfred', country: 'Poland' }
                              );
+}
 
-  GSUnit.assertArrayEqualsIgnoringOrder("Finds multiple records by attribute",
+function testNativeFindWhere () {
+    var Logician = new Godel.Model("Logicians"),
+        brits = Logician.table.natFindWhere({ country: "Britain" });
+
+    GSUnit.assertArrayEqualsIgnoringOrder("Finds multiple records by attribute",
                                         brits,
                                         [{ firstName: 'George', lastName: 'Boole', country: 'Britain' },
                                          { firstName: 'Augustus', lastName: 'De Morgan', country: 'Britain' }
                                         ]
                                        );
+
 }
 
