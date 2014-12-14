@@ -24,8 +24,8 @@ Given a sheet named "Logicians" and the table below starting at the origin A1:
 // "Students" is the name of a sheet in the active spreadsheet
 var Logician = new Godel.Model("Logicians") 
 
-var alf = Logician.findBy({ firstName: "Alfred", lastName: "Tarsky" });
-var brits = Logician.findWhere({ country: "Britains" });
+var alf = Logician.findBy({ firstName: "Alfred", lastName: "Tarski" });
+var brits = Logician.findWhere({ country: "Britain" });
 
 var al = { firstName: "Alan", lastName: "Turing" }
 Logician.create(al);
