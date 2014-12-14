@@ -1,68 +1,51 @@
+// GSUnit documentation:
 // https://sites.google.com/site/scriptsexamples/custom-methods/gsunit
 
 function testManSearch () {
-  var StudentModel = new Godel.Model("Students");
+  var Logician = new Godel.Model("Logicians");
 
-  var will = StudentModel.findWhere({ FirstName: "William", City: "SF" }),
-      wills = StudentModel.findWhere({ FirstName: "William" }); 
+  var alf = Logician.findBy({ firstName: "Alfred", lastName: "Tarski" }),
+      brits = Logician.findWhere({ country: "Britain" });
 
-  GSUnit.assertArrayEquals("Finds single record by attribute",
-                            will, {
-                              MustPing: true, Email: null,
-                              FirstName: 'William', LastName: 'Blake',
-                              City: 'SF', LastEmailed: null
-                             }
+  Logger.log(alf);
+  Logger.log(brits);
+  GSUnit.assertObjectEquals("Finds single record by attribute",
+                            alf, { lastName: "Tarski", firstName: "Alfred", country: "Poland" }
                              );
 
   GSUnit.assertArrayEqualsIgnoringOrder("Finds multiple records by attribute",
-                                        wills,
-                                        [{
-                                          MustPing: true, Email: null, FirstName: 'William',
-                                          LastName: 'Penn', City: 'NY', LastEmailed: null
-                                         },
-                                         {
-                                          MustPing: true, Email: null, FirstName: 'William',
-                                           LastName: 'Blake', City: 'SF', LastEmailed: null
-                                         }
+                                        brits,
+                                        [{ firstName: 'George', lastName: 'Boole', country: 'Britain' },
+                                         { firstName: 'Augustus', lastName: 'De Morgan', country: 'Britain' }
                                         ]
                                        );
 }
 
 function testCreate () {
-  var StudentModel = new Godel.Model("Students"),
-      joe = { FirstName: "Joseph", LastName: "Blogs", City: "LA" };
+  var Logician = new Godel.Model("Logicians"),
+      al = { firstName: "Alan", lastName: "Turing" };
 
-  StudentModel.create(joe);
+  Logician.create(al);
 
   GSUnit.assertEquals("Adds records by attribute",
-                      joe['FirstName'],
-                      SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Students").getRange(22, 1).getValue()
+                      al['FirstName'],
+                      SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Logicians").getRange(5, 1).getValue()
                      );
 }
 
 function testNativeSearch () {
-  var StudentModel = new Godel.Model("Students"),
-      will = StudentModel.table.natFindWhere({ FirstName: "William", City: "SF" }),
-      wills = StudentModel.table.natFindWhere({ FirstName: "William" });
+  var Logician = new Godel.Model("Logicians"),
+      alf = Logician.table.natFindWhere({ firstName: "Alfred", lastName: "Tarski" }),
+      brits = Logician.table.natFindWhere({ county: "Britain" });
 
   GSUnit.assertArrayEquals("Finds single record by attribute",
-                            will, {
-                              MustPing: true, Email: null,
-                              FirstName: 'William', LastName: 'Blake',
-                              City: 'SF', LastEmailed: null
-                             }
+                            alf, { firstName: 'Alfred', lastName: 'Tarski', country: 'Poland' }
                              );
 
   GSUnit.assertArrayEqualsIgnoringOrder("Finds multiple records by attribute",
-                                        wills,
-                                        [{
-                                          MustPing: true, Email: null, FirstName: 'William',
-                                          LastName: 'Penn', City: 'NY', LastEmailed: null
-                                         },
-                                         {
-                                          MustPing: true, Email: null, FirstName: 'William',
-                                           LastName: 'Blake', City: 'SF', LastEmailed: null
-                                         }
+                                        brits,
+                                        [{ firstName: 'George', lastName: 'Boole', country: 'Britain' },
+                                         { firstName: 'Augustus', lastName: 'De Morgan', country: 'Britain' }
                                         ]
                                        );
 }

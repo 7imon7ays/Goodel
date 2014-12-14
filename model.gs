@@ -1,5 +1,3 @@
-function Godel () {}
-
 /*
  * Model takes the name of the sheet where the table is kept.
  * It expects the first row to be a header with column names.
@@ -7,7 +5,15 @@ function Godel () {}
  */
 Godel.Model = function (sheetName) {
   this.spreadSheet = SpreadsheetApp.getActiveSpreadsheet();
-  this.table = new Godel.Table(this.spreadSheet.getSheetByName(sheetName));
+  var sheet = this.spreadSheet.getSheetByName(sheetName);
+ 
+  if (sheet == null) {
+    var missingSheetMsg = 'Could not find sheet "$sheetName" in active spreadsheet.'
+                            .replace("$sheetName", sheetName);
+    throw new Error (missingSheetMsg);
+  }
+ 
+  this.table = new Godel.Table(sheet);
 
   var headerRow = this.table.getRow(1);
   this.columns = headerRow.getValues()[0];

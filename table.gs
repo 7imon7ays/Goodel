@@ -49,7 +49,7 @@ Godel.Table.prototype.manFindBy = function (searchHash) {
     // Return record when first match is found
     if (isAMatch) {
       var row = this.getRow(rowIdx).getValues()[0],
-          record = this._hashifRow(row);
+          record = this._hashifyRow(row);
       return record;
     }
 
