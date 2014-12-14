@@ -5,7 +5,7 @@ an ORM. 'Google Model' = 'Godel'
 
 ## Set up
 
-From your Google scripts editor, click "Resources > Libraries", then enter "MX4aQpaRvsS-JcZN6JrngxPZd3ZQaD1Xq" (this project's key) in the search field and click "Select". Godel will appear in your included libraries. Select the latest version from the corresponding dropdown menu and hit "Save". You're ready to go!
+From your Google scripts editor, click "Resources > Libraries", then enter `MX4aQpaRvsS-JcZN6JrngxPZd3ZQaD1Xq` (this project's key) in the search field and click "Select". Godel will appear in your included libraries. Select the latest version from the corresponding dropdown menu and hit "Save". You're ready to go!
 
 ## Usage
 
