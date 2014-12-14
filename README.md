@@ -42,6 +42,8 @@ var al = { firstName: "Alan", lastName: "Turing" }
 Logician.create(al);
 ```
 
+Works with arbitrary numbers of rows and columns.
+
 ## Contributing
 
 0. Fork it ( https://github.com/7imon7ays/goodel/fork )
