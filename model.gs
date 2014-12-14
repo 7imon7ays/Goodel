@@ -1,4 +1,4 @@
-var Godel = {};
+function Godel () {}
 
 /*
  * Model takes the name of the sheet where the table is kept.

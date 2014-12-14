@@ -36,7 +36,7 @@ Godel.Table.prototype.findWhere = function (searchHash) {
 Godel.Table.prototype.manFindBy = function (searchHash) {
 
   // Loop through rows
-  for (var rowIdx = 1; rowIdx < this.numRecords; rowIdx++) {
+  for (var rowIdx = 1; rowIdx < this.numRows; rowIdx++) {
 
     // Check match for every search key
     var isAMatch = true;
@@ -62,7 +62,7 @@ Godel.Table.prototype.manFindWhere = function (searchHash) {
   var searchResults = [];
   
   // Loop through rows
-  for (var rowIdx = 1; rowIdx < this.numRecords; rowIdx++) {
+  for (var rowIdx = 1; rowIdx < this.numRows; rowIdx++) {
     var isAMatch = true;
 
     // Check match for every search key
@@ -75,7 +75,7 @@ Godel.Table.prototype.manFindWhere = function (searchHash) {
     // Add record to results array if it's a match
     if (isAMatch) {
       var row = this.getRow(rowIdx).getValues()[0],
-          record = this._hashifRow(row);
+          record = this._hashifyRow(row);
       searchResults.push(record);
     }
   }
@@ -204,8 +204,7 @@ Godel.Table.prototype.getRange = function (row, col, nRows, nCols) {
 
 Godel.Table.prototype.getEmptyRowIdx = function () {
   var rowIdx = 1;
-  
-  // TOFIX: Depends on existing rows having non-null value
+
   while (this.getCell(rowIdx, 1).getValue() != "") {
     rowIdx += 1;
   }
@@ -215,8 +214,7 @@ Godel.Table.prototype.getEmptyRowIdx = function () {
 
 Godel.Table.prototype.getEmptyColumnIdx = function () {
   var columnIdx = 1;
-  
-  // TOFIX: Depends on existing columns having non-null value
+
   while (this.getCell(1, columnIdx).getValue() != "") {
     columnIdx += 1;
   }
