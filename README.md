@@ -5,15 +5,26 @@ an ORM. 'Google Model' = 'Godel'
 
 ## Usage
 
+Given a sheet named "Logicians" and the table below starting at the origin A1:
+
+|       |     A     |     B    |     C    |
+|-------|-----------|----------|----------|
+| **1** | firstName | lastName |  country |
+| **2** | David     | Hilbert  |  Germany |
+| **3** | George    | Boole    |  Britain |
+| **4** | Alfred    | Tarski   |  Poland  |
+| **5** | Augustus  | De Morgan|  Britain |
+
+
 ```js
 // "Students" is the name of a sheet in the active spreadsheet
-var Student = new Godel.Model("Students") 
+var Logician = new Godel.Model("Logicians") 
 
-var will = Student.findBy({ firstName: "William", age: "20" });
-var twenyYearOlds = Student.findWhere({ age: "20" });
+var alf = Logician.findBy({ firstName: "Alfred", lastName: "Tarsky" });
+var brits = Logician.findWhere({ country: "Britains" });
 
-var joe = { firstName: "Joseph", lastName: "Bloggs" }
-Student.create(joe);
+var al = { firstName: "Alan", lastName: "Turing" }
+Logician.create(al);
 ```
 
 ## Contributing
