@@ -1,9 +1,9 @@
 // https://sites.google.com/site/scriptsexamples/custom-methods/gsunit
 
-function test () {
+function testModel () {
   var StudentModel = new Godel.Model("Students");
 
-  var wills = StudentModel.findBy({ FirstName: "William" });
+  var wills = StudentModel.findWhere({ FirstName: "William" });
   
   GSUnit.assertArrayEqualsIgnoringOrder("Finds records by attribute",
                                         wills,
@@ -25,5 +25,12 @@ function test () {
                       joe['FirstName'],
                       SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Students").getRange(22, 1).getValue()
                      );
+}
+
+function testQuery () {
+  var StudentModel = new Godel.Model("Students");
+  var results = StudentModel.table.query("William");
+
+  Logger.log(results);
 }
 
