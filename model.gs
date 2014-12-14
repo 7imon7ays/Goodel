@@ -1,35 +1,26 @@
-function main () {
-  var StudentModel = new Godel.Model("Data");
+var Godel = {};
 
-  var will = StudentModel.findBy({ FirstName: "William" });
-  
-  var joe = { FirstName: "Joseph", LastName: "Blogs", City: "LA" };
-  
-  StudentModel.create(joe);
-}
-
-function Godel.Model (sheetName) {
+Godel.Model = function (sheetName) {
   this.spreadSheet = SpreadsheetApp.getActiveSpreadsheet();
-  this.dataSheet = new Godel.DataSheet(this.spreadSheet.getSheetByName(sheetName));
+  this.table = new Godel.Table(this.spreadSheet.getSheetByName(sheetName));
 
-  this.numColumns = this.dataSheet.getEmptyColumnIdx - 1;
-      headerRow = this.dataSheet.getRange(1, 1, 1, this.numColumns);
-
+  var headerRow = this.table.getRow(1);
   this.columns = headerRow.getValues()[0];
+
   this.columnMap = null;
   this._buildColumnMap();
 }
 
-Godel.Model.prototype.findBy = function (searchHash) {
+Godel.Model.prototype.findWhere = function (searchHash) {
   var matches = []
 
   for (var searchKey in searchHash) {
     var columnIdx = this.columnMap[searchKey];
     
     for (var i = 1; i < 20; i++) {
-      var attribute = this.dataSheet.getRange(i, columnIdx).getValue();
+      var attribute = this.table.getCell(i, columnIdx).getValue();
       if (searchHash[searchKey] == attribute) {
-        var row = this.dataSheet.getRange(i, 1, 1, this.numColumns).getValues()[0],
+        var row = this.table.getRow(i).getValues()[0],
             record = this._getRecord(row);
           
         matches.push(record);
@@ -41,11 +32,7 @@ Godel.Model.prototype.findBy = function (searchHash) {
 }
 
 Godel.Model.prototype.create = function (recordHash) {
-  var emptyRowIdx = this.dataSheet.getEmptyRowIdx();
-  
-  var row = this.dataSheet.getRange(emptyRowIdx, 1, 1, this.columns.length),
-      newRecord = [],
-      len = this.columns.length, i;
+  var newRecord = [], len = this.columns.length, i;
   
   for (i = 0; i < len; i++) {
     var column = this.columns[i],
@@ -53,7 +40,9 @@ Godel.Model.prototype.create = function (recordHash) {
     
     newRecord.push(attribute);
   }
-
+  var emptyRowIdx = this.table.getEmptyRowIdx(),
+      row = this.table.getRow(emptyRowIdx);
+  
   row.setValues([newRecord]);
 }
 
