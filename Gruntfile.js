@@ -6,7 +6,7 @@ module.exports = function(grunt) {
         separator: '\n'
       },
       dist: {
-        src: ['lib/godel.gs',
+        src: ['lib/goodel.gs',
               'lib/model.gs',
               'lib/table.gs'
             ],

@@ -2,7 +2,7 @@ var ALPHABET = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H',
                'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P',
                'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
 
-Godel.Table = function (sheet) {
+Goodel.Table = function (sheet) {
   this.sheet = sheet;
   this.numColumns = this.getEmptyColumnIdx() - 1;
   this.numRows = this.getEmptyRowIdx() - 1;
@@ -11,7 +11,7 @@ Godel.Table = function (sheet) {
   this._buildColumnMap();
 }
 
-Godel.Table.prototype.findBy = function (searchHash) {
+Goodel.Table.prototype.findBy = function (searchHash) {
   /* If there are more than 20 records,
    * use native search with single query.
    * Otherwise, make one query per row.
@@ -24,7 +24,7 @@ Godel.Table.prototype.findBy = function (searchHash) {
   }
 }
 
-Godel.Table.prototype.findWhere = function (searchHash) {
+Goodel.Table.prototype.findWhere = function (searchHash) {
   // Same as above
   if (this.numRows > 20) {
     return this.natFindWhere(searchHash);
@@ -33,7 +33,7 @@ Godel.Table.prototype.findWhere = function (searchHash) {
   }
 }
 
-Godel.Table.prototype.manFindBy = function (searchHash) {
+Goodel.Table.prototype.manFindBy = function (searchHash) {
 
   // Loop through rows
   for (var rowIdx = 1; rowIdx < this.numRows; rowIdx++) {
@@ -61,7 +61,7 @@ Godel.Table.prototype.manFindBy = function (searchHash) {
   return null
 }
 
-Godel.Table.prototype.manFindWhere = function (searchHash) {
+Goodel.Table.prototype.manFindWhere = function (searchHash) {
   var searchResults = [];
   
   // Loop through rows
@@ -90,7 +90,7 @@ Godel.Table.prototype.manFindWhere = function (searchHash) {
 }
 
 
-Godel.Table.prototype.natFindBy = function (searchHash) {
+Goodel.Table.prototype.natFindBy = function (searchHash) {
   /*
    * Create a temporary sheet with a random name
    * where the search formula is inserted.
@@ -122,7 +122,7 @@ Godel.Table.prototype.natFindBy = function (searchHash) {
 
 }
 
-Godel.Table.prototype.natFindWhere = function (searchHash) {
+Goodel.Table.prototype.natFindWhere = function (searchHash) {
   // Same as above
   var tempSheetName = Math.random().toString(36),
       spreadSheet = this.sheet.getParent();
@@ -156,7 +156,7 @@ Godel.Table.prototype.natFindWhere = function (searchHash) {
   return searchResults;
 }
 
-Godel.Table.prototype._buildSearchConditions = function (searchHash) {
+Goodel.Table.prototype._buildSearchConditions = function (searchHash) {
   var searchConditions = "";
 
   for (var key in searchHash) {
@@ -180,7 +180,7 @@ Godel.Table.prototype._buildSearchConditions = function (searchHash) {
   return searchConditions;
 }
 
-Godel.Table.prototype._throwBadAttrMsg = function (key) {
+Goodel.Table.prototype._throwBadAttrMsg = function (key) {
   var badAttributeMsg = '<sheetName> table does not have a "<key>" column.'
                               .replace("<sheetName>", this.sheet.getName())
                               .replace("<key>", key);
@@ -188,13 +188,13 @@ Godel.Table.prototype._throwBadAttrMsg = function (key) {
   throw new Error(badAttributeMsg);
 }
 
-Godel.Table.prototype._getSearchRange = function () {
+Goodel.Table.prototype._getSearchRange = function () {
   return "=FILTER($table!A2:$lastRow, "
             .replace("$table", this.sheet.getName())
             .replace("$lastRow", this.getEmptyRowIdx() - 1);
 }
 
-Godel.Table.prototype._hashifyRow = function (row) {
+Goodel.Table.prototype._hashifyRow = function (row) {
   var record = {}, len = this.numColumns, i;
   
   for (i = 0; i < len; i++) {
@@ -210,19 +210,19 @@ Godel.Table.prototype._hashifyRow = function (row) {
   return record;
 }
 
-Godel.Table.prototype.getRow = function (row) {
+Goodel.Table.prototype.getRow = function (row) {
   return this.sheet.getRange(row, 1, 1, this.numColumns);
 }
 
-Godel.Table.prototype.getCell = function (row, col) {
+Goodel.Table.prototype.getCell = function (row, col) {
   return this.sheet.getRange(row, col);
 }
 
-Godel.Table.prototype.getRange = function (row, col, nRows, nCols) {
+Goodel.Table.prototype.getRange = function (row, col, nRows, nCols) {
   return this.sheet.getRange(row, col, nRows, nCols);
 }
 
-Godel.Table.prototype.getEmptyRowIdx = function () {
+Goodel.Table.prototype.getEmptyRowIdx = function () {
   var rowIdx = 1;
 
   while (this.getCell(rowIdx, 1).getValue() != "") {
@@ -232,7 +232,7 @@ Godel.Table.prototype.getEmptyRowIdx = function () {
   return rowIdx;
 }
 
-Godel.Table.prototype.getEmptyColumnIdx = function () {
+Goodel.Table.prototype.getEmptyColumnIdx = function () {
   var columnIdx = 1;
 
   while (this.getCell(1, columnIdx).getValue() != "") {
@@ -242,7 +242,7 @@ Godel.Table.prototype.getEmptyColumnIdx = function () {
   return columnIdx;
 }
 
-Godel.Table.prototype._buildColumnMap = function () {
+Goodel.Table.prototype._buildColumnMap = function () {
   var columnMap = {},
       len = this.numColumns,
       columns = this.getRow(1).getValues()[0],

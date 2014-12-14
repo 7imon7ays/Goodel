@@ -1,10 +1,10 @@
 {
-  "name": "godel",
+  "name": "goodel",
   "version": "0.0.1",
   "description": "\"An ORM for Google Apps scripts\"",
   "repository": {
     "type": "git",
-    "url": "git://github.com/7imon7ays/godel.git"
+    "url": "git://github.com/7imon7ays/goodel.git"
   },
   "devDependencies": {
     "grunt": "~0.4.5",
@@ -13,8 +13,8 @@
   "author": "7imon7ays",
   "license": "BSD-2-Clause",
   "bugs": {
-    "url": "https://github.com/7imon7ays/godel/issues"
+    "url": "https://github.com/7imon7ays/goodel/issues"
   },
-  "homepage": "https://github.com/7imon7ays/godel/issues"
+  "homepage": "https://github.com/7imon7ays/goodel/issues"
 }
 
