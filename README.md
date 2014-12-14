@@ -1,7 +1,7 @@
 # Goodel
 
 I was tired of referring to documentation for my Google App scripts. So I made
-an ORM. 'Google Model' = 'Goodel'
+an ORM.
 
 ## Set up
 
