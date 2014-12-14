@@ -29,7 +29,7 @@ Logician.create(al);
 
 ## Contributing
 
-0. Fork it ( https://github.com/[my-github-username]/dears3/fork )
+0. Fork it ( https://github.com/7imon7ays/godel/fork )
 0. Create your feature branch (`git checkout -b my-new-feature`)
 0. Commit your changes (`git commit -am 'Add some feature'`)
 0. Push to the branch (`git push origin my-new-feature`)
