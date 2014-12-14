@@ -62,16 +62,17 @@ Godel.Table.prototype.manFindWhere = function (searchHash) {
   var searchResults = [];
   
   // Loop through rows
-  for (var rowIdx = 1; rowIdx < this.numRows; rowIdx++) {
+  for (var rowIdx = 1; rowIdx <= this.numRows; rowIdx++) {
     var isAMatch = true;
 
     // Check match for every search key
     for (var searchKey in searchHash) {
       var columnIdx = this.columnMap[searchKey],
           attribute = this.getCell(rowIdx, columnIdx).getValue();
+
       if (searchHash[searchKey] != attribute) isAMatch = false;
     }
-    
+
     // Add record to results array if it's a match
     if (isAMatch) {
       var row = this.getRow(rowIdx).getValues()[0],

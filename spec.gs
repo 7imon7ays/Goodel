@@ -26,8 +26,8 @@ function testCreate () {
   Logician.create(al);
 
   GSUnit.assertEquals("Adds records by attribute",
-                      al['FirstName'],
-                      SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Logicians").getRange(5, 1).getValue()
+                      al['firstName'],
+                      SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Logicians").getRange(6, 1).getValue()
                      );
 }
 
