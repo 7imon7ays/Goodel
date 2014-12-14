@@ -41,8 +41,11 @@ Godel.Table.prototype.manFindBy = function (searchHash) {
     // Check match for every search key
     var isAMatch = true;
     for (var searchKey in searchHash) {
-      var columnIdx = this.columnMap[searchKey],
-          attribute = this.getCell(rowIdx, columnIdx).getValue();
+      var columnIdx = this.columnMap[searchKey];
+ 
+      if (columnIdx == undefined) this._throwBadAttrMsg(searchKey);
+ 
+      var attribute = this.getCell(rowIdx, columnIdx).getValue();
       if (searchHash[searchKey] != attribute) isAMatch = false;
     }
 
@@ -67,9 +70,11 @@ Godel.Table.prototype.manFindWhere = function (searchHash) {
 
     // Check match for every search key
     for (var searchKey in searchHash) {
-      var columnIdx = this.columnMap[searchKey],
-          attribute = this.getCell(rowIdx, columnIdx).getValue();
+      var columnIdx = this.columnMap[searchKey];
 
+      if (columnIdx == undefined) this._throwBadAttrMsg(searchKey);
+
+      var attribute = this.getCell(rowIdx, columnIdx).getValue();
       if (searchHash[searchKey] != attribute) isAMatch = false;
     }
 
@@ -156,7 +161,9 @@ Godel.Table.prototype._buildSearchConditions = function (searchHash) {
 
   for (var key in searchHash) {
     var searchColumn = ALPHABET[this.columnMap[key] - 1];
-    
+
+    if (searchColumn == undefined) this._throwBadAttrMsg(key);
+
     var condition = '<table>!<searchCol>2:<searchCol><lastRow> = "<searchVal>"'
                       .replace("<table>", this.sheet.getName())
                       .replace(/<searchCol>/g, searchColumn)
@@ -171,6 +178,14 @@ Godel.Table.prototype._buildSearchConditions = function (searchHash) {
   searchConditions = searchConditions.slice(0, searchConditions.length - 1);
 
   return searchConditions;
+}
+
+Godel.Table.prototype._throwBadAttrMsg = function (key) {
+  var badAttributeMsg = '<sheetName> table does not have a "<key>" column.'
+                              .replace("<sheetName>", this.sheet.getName())
+                              .replace("<key>", key);
+
+  throw new Error(badAttributeMsg);
 }
 
 Godel.Table.prototype._getSearchRange = function () {
