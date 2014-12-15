@@ -33,12 +33,12 @@ Given a sheet named "Logicians" and the table below starting at the origin A1:
 
 ```js
 // "Students" is the name of a sheet in the active spreadsheet
-var Logician = new Goodel.Model("Logicians") 
+var Logician = Goodel.Model("Logicians");
 
 var alf = Logician.findBy({ firstName: "Alfred", lastName: "Tarski" });
 var brits = Logician.findWhere({ country: "Britain" });
 
-var al = { firstName: "Alan", lastName: "Turing" }
+var al = new Logician({ firstName: "Alan", lastName: "Turing" });
 Logician.create(al);
 ```
 
