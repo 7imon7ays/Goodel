@@ -1,7 +1,10 @@
 # Goodel
 
-I was tired of referring to documentation for my Google App scripts. So I made
-an ORM.
+Google App Script is pretty powerful. With very little setup it can
+programmatically query services such as Google Drive, Google Forms and Google
+Mail. Google Sheets can stand in as your database, but querying records by rows
+and columns is no fun. **Goodel** hides that busywork under a familiar API so you
+can focus on the good stuff.
 
 ## Set up
 
