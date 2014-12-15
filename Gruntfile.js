@@ -7,9 +7,11 @@ module.exports = function(grunt) {
       },
       dist: {
         src: ['lib/goodel.gs',
-              'lib/model.gs',
+              'lib/modeler.gs',
+              'lib/model_class_methods.gs',
+              'lib/model_instance_methods.gs',
               'lib/table.gs'
-            ],
+              ],
         dest: '<%= pkg.name %>.gs'
       },
     }

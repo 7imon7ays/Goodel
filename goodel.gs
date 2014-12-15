@@ -6,31 +6,50 @@ function Goodel () {}
  * It expects the first row to be a header with column names.
  * Ie. it won't search that row
  */
-Goodel.Model = function (sheetName) {
-  this.spreadSheet = SpreadsheetApp.getActiveSpreadsheet();
-  var sheet = this.spreadSheet.getSheetByName(sheetName);
- 
+Goodel.Modeler = function (sheetName) {
+  var spreadsheet = SpreadsheetApp.getActiveSpreadsheet(),
+      sheet = spreadsheet.getSheetByName(sheetName),
+      table = new Goodel.Table(sheet),
+      columns = table.getRow(1).getValues()[0];
+
   if (sheet == null) {
     var missingSheetMsg = 'Could not find sheet "$sheetName" in active spreadsheet.'
                             .replace("$sheetName", sheetName);
     throw new Error (missingSheetMsg);
   }
- 
-  this.table = new Goodel.Table(sheet);
 
-  var headerRow = this.table.getRow(1);
-  this.columns = headerRow.getValues()[0];
+  function Model (instanceAttrHash) {
+    this.model = Model;
+    for (var attr in instanceAttrHash) {
+      this[attr] = instanceAttrHash[attr];
+    }
+  }
+
+  Model.sheet = sheet;
+  Model.table = table;
+  Model.columns = columns;
+
+  for (var classMethod in Goodel._modelClassMethods) {
+    Model[classMethod] = Goodel._modelClassMethods[classMethod];
+  }
+
+  Model.prototype = Goodel._modelInstanceMethods;
+
+  return Model;
 }
 
-Goodel.Model.prototype.findWhere = function (searchHash) {
+
+Goodel._modelClassMethods = function () {}
+
+Goodel._modelClassMethods.findWhere = function (searchHash) {
   return this.table.findWhere(searchHash);
 }
 
-Goodel.Model.prototype.findBy = function (searchHash) {
+Goodel._modelClassMethods.findBy = function (searchHash) {
   return this.table.findBy(searchHash);
 }
 
-Goodel.Model.prototype.create = function (recordHash) {
+Goodel._modelClassMethods.create = function (recordHash) {
   var newRecord = [], len = this.columns.length, i;
   
   for (i = 0; i < len; i++) {
@@ -47,6 +66,15 @@ Goodel.Model.prototype.create = function (recordHash) {
 
   return newRecord;
 }
+
+Goodel._modelClassMethods.toString = function () {
+  return "{ sheet: <sheet>, columns: <columns> }"
+          .replace("<sheet>", this.sheet.getName())
+          .replace("<columns>", this.columns)
+}
+
+
+Goodel._modelInstanceMethods = function () {}
 
 
 var ALPHABET = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H',
@@ -87,7 +115,7 @@ Goodel.Table.prototype.findWhere = function (searchHash) {
 Goodel.Table.prototype.manFindBy = function (searchHash) {
 
   // Loop through rows
-  for (var rowIdx = 1; rowIdx < this.numRows; rowIdx++) {
+  for (var rowIdx = 1; rowIdx <= this.numRows; rowIdx++) {
 
     // Check match for every search key
     var isAMatch = true;
@@ -149,8 +177,8 @@ Goodel.Table.prototype.natFindBy = function (searchHash) {
    */
   // Same as above
   var tempSheetName = Math.random().toString(36),
-      spreadSheet = this.sheet.getParent(),
-      tempSheet = spreadSheet.insertSheet(tempSheetName),
+      spreadsheet = this.sheet.getParent(),
+      tempSheet = spreadsheet.insertSheet(tempSheetName),
       firstCell = tempSheet.getRange(1,1);
 
   var searchFormula = this._getSearchRange(),
@@ -168,7 +196,7 @@ Goodel.Table.prototype.natFindBy = function (searchHash) {
   var matchingRow = tempSheet.getRange(1, 1, 1, this.numColumns).getValues()[0];
   var matchingRecord = this._hashifyRow(matchingRow);
   
-  spreadSheet.deleteSheet(tempSheet);
+  spreadsheet.deleteSheet(tempSheet);
   return matchingRecord;
 
 }
@@ -176,8 +204,8 @@ Goodel.Table.prototype.natFindBy = function (searchHash) {
 Goodel.Table.prototype.natFindWhere = function (searchHash) {
   // Same as above
   var tempSheetName = Math.random().toString(36),
-      spreadSheet = this.sheet.getParent();
-      var tempSheet = spreadSheet.insertSheet(tempSheetName),
+      spreadsheet = this.sheet.getParent();
+      var tempSheet = spreadsheet.insertSheet(tempSheetName),
       firstCell = tempSheet.getRange(1,1),
       searchResults = [];
   
@@ -203,7 +231,7 @@ Goodel.Table.prototype.natFindWhere = function (searchHash) {
     thisRow = tempSheet.getRange(++i, 1, 1, this.numColumns).getValues()[0];
   }
 
-  spreadSheet.deleteSheet(tempSheet);
+  spreadsheet.deleteSheet(tempSheet);
   return searchResults;
 }
 
