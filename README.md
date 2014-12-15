@@ -39,7 +39,7 @@ var alf = Logician.findBy({ firstName: "Alfred", lastName: "Tarski" });
 var brits = Logician.findWhere({ country: "Britain" });
 
 var al = new Logician({ firstName: "Alan", lastName: "Turing" });
-Logician.create(al);
+al.save(); // "Logician.create(al)" also works.
 ```
 
 Works with arbitrary numbers of rows and columns.
