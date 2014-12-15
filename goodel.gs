@@ -2,9 +2,9 @@ function Goodel () {}
 
 
 /*
- * Model takes the name of the sheet where the table is kept.
- * It expects the first row to be a header with column names.
- * Ie. it won't search that row
+ * Modeler takes the name of the sheet where the table is kept.
+ * It expects the first row to be a header with column names
+ * Ie. it won't search that row.
  */
 Goodel.Modeler = function (sheetName) {
   var spreadsheet = SpreadsheetApp.getActiveSpreadsheet(),
@@ -13,8 +13,8 @@ Goodel.Modeler = function (sheetName) {
       columns = table.getRow(1).getValues()[0];
 
   if (sheet == null) {
-    var missingSheetMsg = 'Could not find sheet "$sheetName" in active spreadsheet.'
-                            .replace("$sheetName", sheetName);
+    var missingSheetMsg = 'Could not find sheet "<sheetName>" in active spreadsheet.'
+                            .replace("<sheetName>", sheetName);
     throw new Error (missingSheetMsg);
   }
 
@@ -26,6 +26,7 @@ Goodel.Modeler = function (sheetName) {
   }
 
   Model.sheet = sheet;
+  Model.name = sheet.getName();
   Model.table = table;
   Model.columns = columns;
 
