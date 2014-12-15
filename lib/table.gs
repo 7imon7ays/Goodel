@@ -36,7 +36,7 @@ Goodel.Table.prototype.findWhere = function (searchHash) {
 Goodel.Table.prototype.manFindBy = function (searchHash) {
 
   // Loop through rows
-  for (var rowIdx = 1; rowIdx < this.numRows; rowIdx++) {
+  for (var rowIdx = 1; rowIdx <= this.numRows; rowIdx++) {
 
     // Check match for every search key
     var isAMatch = true;
@@ -98,8 +98,8 @@ Goodel.Table.prototype.natFindBy = function (searchHash) {
    */
   // Same as above
   var tempSheetName = Math.random().toString(36),
-      spreadSheet = this.sheet.getParent(),
-      tempSheet = spreadSheet.insertSheet(tempSheetName),
+      spreadsheet = this.sheet.getParent(),
+      tempSheet = spreadsheet.insertSheet(tempSheetName),
       firstCell = tempSheet.getRange(1,1);
 
   var searchFormula = this._getSearchRange(),
@@ -117,7 +117,7 @@ Goodel.Table.prototype.natFindBy = function (searchHash) {
   var matchingRow = tempSheet.getRange(1, 1, 1, this.numColumns).getValues()[0];
   var matchingRecord = this._hashifyRow(matchingRow);
   
-  spreadSheet.deleteSheet(tempSheet);
+  spreadsheet.deleteSheet(tempSheet);
   return matchingRecord;
 
 }
@@ -125,8 +125,8 @@ Goodel.Table.prototype.natFindBy = function (searchHash) {
 Goodel.Table.prototype.natFindWhere = function (searchHash) {
   // Same as above
   var tempSheetName = Math.random().toString(36),
-      spreadSheet = this.sheet.getParent();
-      var tempSheet = spreadSheet.insertSheet(tempSheetName),
+      spreadsheet = this.sheet.getParent();
+      var tempSheet = spreadsheet.insertSheet(tempSheetName),
       firstCell = tempSheet.getRange(1,1),
       searchResults = [];
   
@@ -152,7 +152,7 @@ Goodel.Table.prototype.natFindWhere = function (searchHash) {
     thisRow = tempSheet.getRange(++i, 1, 1, this.numColumns).getValues()[0];
   }
 
-  spreadSheet.deleteSheet(tempSheet);
+  spreadsheet.deleteSheet(tempSheet);
   return searchResults;
 }
 

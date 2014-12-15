@@ -1,0 +1,2 @@
+Goodel._modelInstanceMethods = function () {}
+
