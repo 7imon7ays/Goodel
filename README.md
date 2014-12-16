@@ -1,10 +1,26 @@
 # Goodel
 
-Google App Script is pretty powerful. With very little setup it can
-programmatically query services such as Google Drive, Google Forms and Google
-Mail. Google Sheets can stand in as your database, but querying records by rows
-and columns is no fun. **Goodel** hides that busywork under a familiar API so you
-can focus on the good stuff.
+[Google App Script][app script] is powerful. Similar to Microsoft's VBA, it
+programmatically queries Google services such a Drive, Forms and Mail with
+minimal setup.
+
+Google Sheets works well as a database for these scripts, but querying records
+by rows and columns is no fun. **Goodel** hides the querying under a familiar
+API.
+
+[app script]: https://developers.google.com/apps-script/
+
+## Why use Goodel?
+
+Do you often fight the urge to automate ever repetitive tasks you come across?
+Do you sometimes wish you could replace every spreadsheet in your life with
+a custom web app?
+
+![xkcd: the general problem](http://imgs.xkcd.com/comics/the_general_problem.png)
+
+Google App Script closes the gap between what a web app and what a spreadsheet
+can do. Goodel goes one step further and makes the two equally enjoyable.
+Perfect for rapid prototyping and automating administrative tasks.
 
 ## Set up
 
