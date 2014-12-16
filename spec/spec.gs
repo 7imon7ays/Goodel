@@ -2,7 +2,7 @@
 // https://sites.google.com/site/scriptsexamples/custom-methods/gsunit
 
 function testManualSearch () {
-  var Logician = Goodel.Modeler("Logicians");
+  var Logician = Goodel("Logicians");
 
   var alf = Logician.findBy({ firstName: "Alfred", lastName: "Tarski" }),
       brits = Logician.findWhere({ country: "Britain" });
@@ -21,7 +21,7 @@ function testManualSearch () {
 }
 
 function testCreate () {
-  var Logician = Goodel.Modeler("Logicians"),
+  var Logician = Goodel("Logicians"),
       al = new Logician({ firstName: "Alan", lastName: "Turing" });
 
   al.save();
@@ -33,7 +33,7 @@ function testCreate () {
 }
 
 function testNativeFindBy () {
-  var Logician = Goodel.Modeler("Logicians"),
+  var Logician = Goodel("Logicians"),
       alf = Logician.table.natFindBy({ firstName: "Alfred", lastName: "Tarski" });
   GSUnit.assertObjectEquals("Finds single record by attribute",
                             alf, { lastName: 'Tarski', firstName: 'Alfred', country: 'Poland' }
@@ -41,7 +41,7 @@ function testNativeFindBy () {
 }
 
 function testNativeFindWhere () {
-    var Logician = new Goodel.Modeler("Logicians"),
+    var Logician = Goodel("Logicians"),
         brits = Logician.table.natFindWhere({ country: "Britain" });
 
     GSUnit.assertArrayEqualsIgnoringOrder("Finds multiple records by attribute",

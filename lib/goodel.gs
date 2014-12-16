@@ -1,2 +1,4 @@
-function Goodel () {}
+function Goodel (sheetName) {
+  return Goodel.Modeler(sheetName);
+}
 
