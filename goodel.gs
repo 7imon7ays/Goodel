@@ -1,4 +1,6 @@
-function Goodel () {}
+function Goodel (sheetName) {
+  return Goodel.Modeler(sheetName);
+}
 
 
 /*
@@ -76,6 +78,10 @@ Goodel._modelClassMethods.toString = function () {
 
 
 Goodel._modelInstanceMethods = function () {}
+
+Goodel._modelInstanceMethods.save = function () {
+  this.model.create(this);
+}
 
 
 var ALPHABET = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H',
