@@ -12,12 +12,12 @@ Goodel.Table = function (sheet) {
 }
 
 Goodel.Table.prototype.findBy = function (searchHash) {
-  /* If there are more than 20 records,
+  /* If there are more than 50 cells to check,
    * use native search with single query.
    * Otherwise, make one query per row.
    */
   
-  if (this.numRows > 20) {
+  if (this.numRows * this.numColumns > 50 ) {
     return this.natFindBy(searchHash);
   } else {
     return this.manFindBy(searchHash);
@@ -26,7 +26,7 @@ Goodel.Table.prototype.findBy = function (searchHash) {
 
 Goodel.Table.prototype.findWhere = function (searchHash) {
   // Same as above
-  if (this.numRows > 20) {
+  if (this.numRows * this.numColumns > 50) {
     return this.natFindWhere(searchHash);
   } else {
     return this.manFindWhere(searchHash);
@@ -46,6 +46,7 @@ Goodel.Table.prototype.manFindBy = function (searchHash) {
       if (columnIdx == undefined) this._throwBadAttrMsg(searchKey);
  
       var attribute = this.getCell(rowIdx, columnIdx).getValue();
+
       if (searchHash[searchKey] != attribute) isAMatch = false;
     }
 
@@ -189,9 +190,9 @@ Goodel.Table.prototype._throwBadAttrMsg = function (key) {
 }
 
 Goodel.Table.prototype._getSearchRange = function () {
-  return "=FILTER($table!A2:$lastRow, "
-            .replace("$table", this.sheet.getName())
-            .replace("$lastRow", this.getEmptyRowIdx() - 1);
+  return "=FILTER(<table>!A2:<lastRow>, "
+            .replace("<table>", this.sheet.getName())
+            .replace("<lastRow>", this.getEmptyRowIdx() - 1);
 }
 
 Goodel.Table.prototype._hashifyRow = function (row) {
