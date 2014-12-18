@@ -1,24 +1,29 @@
 # Goodel
 
-[Google App Script][app script] is powerful. Similar to Microsoft's VBA, it
-programmatically queries Google services such a Drive, Forms and Mail with
-minimal setup.
+[Google Apps Script][apps script] is powerful. Similar to Microsoft's VBA, it
+programmatically queries Google services such a Drive, Forms, Analytics, and
+Mail with minimal setup.
 
-Google Sheets works well as a database for these scripts, but querying records
+Google Sheets works well as a database for these scripts*, but querying records
 by rows and columns is no fun. **Goodel** hides the querying under a familiar
-API.
+object-oriented API.
 
-[app script]: https://developers.google.com/apps-script/
+\* *If you're wondering, Google Apps Script has a service called [JDBC][jdbc]
+that can connect to a cloud database. However you'll have to set up your SQL
+server or pay for Google Cloud SQL. Note that JDBC is just a driver, not an ORM.*
+
+[apps script]: https://developers.google.com/apps-script/
+[jdbc]: https://developers.google.com/apps-script/guides/jdbc
 
 ## Why use Goodel?
 
-Do you often fight the urge to automate ever repetitive tasks you come across?
-Do you sometimes wish you could replace every spreadsheet in your life with
-a custom web app?
+Do you often fight the urge to automate every repetitive task you come across?
+Do you sometimes wish you could replace all the spreadsheets in your life with
+custom web apps?
 
 ![xkcd: the general problem](http://imgs.xkcd.com/comics/the_general_problem.png)
 
-Google App Script closes the gap between what a web app and what a spreadsheet
+Google App Script narrows the gap between what a web app and what a spreadsheet
 can do. Goodel goes one step further and makes the two equally enjoyable.
 Perfect for rapid prototyping and automating administrative tasks.
 
@@ -30,10 +35,10 @@ and click "Select". Goodel will appear in your included libraries. Select the
 latest version from the corresponding dropdown menu and hit "Save". You're
 ready to go!
 
-*Note: Loading functions from external libraries seems not to work for some.*
-*This is a [known issue][google library bug discussion] as of December 2014.*
-*If the libraries' variables are undefined in your script, you can simply add the*
-*`goodel.gs` file to your project.*
+*Note: Loading functions from external libraries seems not to work for some.
+This is a [known issue][google library bug discussion] as of December 2014.
+If the libraries' variables are undefined in your script, you can simply add the
+`goodel.gs` file to your project.*
 
 [google library bug discussion]: https://code.google.com/p/google-apps-script-issues/issues/detail?id=3778
 
@@ -55,7 +60,9 @@ Given a sheet named "Logicians" and the table below starting at the origin A1:
 var Logician = Goodel("Logicians");
 
 var alf = Logician.findBy({ firstName: "Alfred", lastName: "Tarski" });
+alf.country // => "Poland"
 var brits = Logician.findWhere({ country: "Britain" });
+brits.length // => 2
 
 var al = new Logician({ firstName: "Alan", lastName: "Turing" });
 al.save(); // "Logician.create(al)" also works.
