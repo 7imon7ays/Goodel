@@ -4,7 +4,7 @@
 programmatically queries Google services such a Drive, Forms, Analytics, and
 Mail with minimal setup.
 
-Google Sheets works well as a database for these scripts*, but querying records
+Google Sheets works well as a database for these scripts\*, but querying records
 by rows and columns is no fun. **Goodel** hides the querying under a familiar
 object-oriented API.
 
