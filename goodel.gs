@@ -36,8 +36,8 @@ Goodel.Modeler = function (sheetName) {
     Model[classMethod] = Goodel._modelClassMethods[classMethod];
   }
 
-  Model.prototype = Goodel._modelInstanceMethods;
-
+  Model.prototype = Object.create(Goodel._ModelInstance.prototype);
+  
   return Model;
 }
 
@@ -49,7 +49,9 @@ Goodel._modelClassMethods.findWhere = function (searchHash) {
 }
 
 Goodel._modelClassMethods.findBy = function (searchHash) {
-  return this.table.findBy(searchHash);
+  var attrs = this.table.findBy(searchHash);
+
+  return new this(attrs);
 }
 
 Goodel._modelClassMethods.create = function (recordHash) {
@@ -73,14 +75,32 @@ Goodel._modelClassMethods.create = function (recordHash) {
 Goodel._modelClassMethods.toString = function () {
   return "{ sheet: <sheet>, columns: <columns> }"
           .replace("<sheet>", this.sheet.getName())
-          .replace("<columns>", this.columns)
+          .replace("<columns>", this.columns);
 }
 
 
-Goodel._modelInstanceMethods = function () {}
+Goodel._ModelInstance = function () {}
 
-Goodel._modelInstanceMethods.save = function () {
+Goodel._ModelInstance.prototype.save = function () {
   this.model.create(this);
+}
+
+Goodel._ModelInstance.prototype.toString = function () {
+  var stringifiedObj = [];
+  
+  for (var key in this) {
+    if (this.hasOwnProperty(key)) {
+      var kvPair = "<key> = <value>"
+        .replace("<key>", key)
+        .replace("<value>", this[key]);
+      
+      stringifiedObj.push(kvPair);
+    }
+  }
+  
+  stringifiedObj = "{ " + stringifiedObj.join(", ") + " }";
+  
+  return stringifiedObj;
 }
 
 
@@ -98,12 +118,12 @@ Goodel.Table = function (sheet) {
 }
 
 Goodel.Table.prototype.findBy = function (searchHash) {
-  /* If there are more than 20 records,
+  /* If there are more than 50 cells to check,
    * use native search with single query.
    * Otherwise, make one query per row.
    */
   
-  if (this.numRows > 20) {
+  if (this.numRows * this.numColumns > 50 ) {
     return this.natFindBy(searchHash);
   } else {
     return this.manFindBy(searchHash);
@@ -112,7 +132,7 @@ Goodel.Table.prototype.findBy = function (searchHash) {
 
 Goodel.Table.prototype.findWhere = function (searchHash) {
   // Same as above
-  if (this.numRows > 20) {
+  if (this.numRows * this.numColumns > 50) {
     return this.natFindWhere(searchHash);
   } else {
     return this.manFindWhere(searchHash);
@@ -132,6 +152,7 @@ Goodel.Table.prototype.manFindBy = function (searchHash) {
       if (columnIdx == undefined) this._throwBadAttrMsg(searchKey);
  
       var attribute = this.getCell(rowIdx, columnIdx).getValue();
+
       if (searchHash[searchKey] != attribute) isAMatch = false;
     }
 
@@ -248,7 +269,7 @@ Goodel.Table.prototype._buildSearchConditions = function (searchHash) {
   for (var key in searchHash) {
     var searchColumn = ALPHABET[this.columnMap[key] - 1];
 
-    if (searchColumn == undefined) this._throwBadAttrMsg(key);
+    if (searchColumn === undefined) this._throwBadAttrMsg(key);
 
     var condition = '<table>!<searchCol>2:<searchCol><lastRow> = "<searchVal>"'
                       .replace("<table>", this.sheet.getName())
@@ -275,9 +296,9 @@ Goodel.Table.prototype._throwBadAttrMsg = function (key) {
 }
 
 Goodel.Table.prototype._getSearchRange = function () {
-  return "=FILTER($table!A2:$lastRow, "
-            .replace("$table", this.sheet.getName())
-            .replace("$lastRow", this.getEmptyRowIdx() - 1);
+  return "=FILTER(<table>!A2:<lastRow>, "
+            .replace("<table>", this.sheet.getName())
+            .replace("<lastRow>", this.getEmptyRowIdx() - 1);
 }
 
 Goodel.Table.prototype._hashifyRow = function (row) {
