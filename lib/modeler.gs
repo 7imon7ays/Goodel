@@ -31,8 +31,8 @@ Goodel.Modeler = function (sheetName) {
     Model[classMethod] = Goodel._modelClassMethods[classMethod];
   }
 
-  Model.prototype = Goodel._modelInstanceMethods;
-
+  Model.prototype = Object.create(Goodel._ModelInstance.prototype);
+  
   return Model;
 }
 

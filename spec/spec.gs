@@ -6,12 +6,11 @@ function testManualSearch () {
 
   var alf = Logician.findBy({ firstName: "Alfred", lastName: "Tarski" }),
       brits = Logician.findWhere({ country: "Britain" });
-
   
-  GSUnit.assertObjectEquals("Finds single record by attribute",
-                            alf, { lastName: "Tarski", firstName: "Alfred", country: "Poland" }
+  GSUnit.assertObjectIncludes("Finds single record by attribute",
+                              alf, { lastName: "Tarski", firstName: "Alfred", country: "Poland" }
                              );
-
+  
   GSUnit.assertArrayEqualsIgnoringOrder("Finds multiple records by attribute",
                                         brits,
                                         [{ firstName: 'George', lastName: 'Boole', country: 'Britain' },
@@ -23,7 +22,7 @@ function testManualSearch () {
 function testCreate () {
   var Logician = Goodel("Logicians"),
       al = new Logician({ firstName: "Alan", lastName: "Turing" });
-
+  
   al.save();
 
   GSUnit.assertEquals("Adds records by attribute",
@@ -51,5 +50,17 @@ function testNativeFindWhere () {
                                         ]
                                        );
 
+}
+
+GSUnit.assertObjectIncludes = function (testName, testObj, testAttrs) {
+  for (var key in testAttrs) {
+    var value = testAttrs[key],
+        desc = "<testName>, yielding object with attribute <key>: <value>"
+                      .replace("<testName>", testName)
+                      .replace("<key>", key)
+                      .replace("<value>", value);
+
+    this.assertEquals(desc, testObj[key], value);
+  }
 }
 

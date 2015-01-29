@@ -5,7 +5,9 @@ Goodel._modelClassMethods.findWhere = function (searchHash) {
 }
 
 Goodel._modelClassMethods.findBy = function (searchHash) {
-  return this.table.findBy(searchHash);
+  var attrs = this.table.findBy(searchHash);
+
+  return new this(attrs);
 }
 
 Goodel._modelClassMethods.create = function (recordHash) {
@@ -29,6 +31,6 @@ Goodel._modelClassMethods.create = function (recordHash) {
 Goodel._modelClassMethods.toString = function () {
   return "{ sheet: <sheet>, columns: <columns> }"
           .replace("<sheet>", this.sheet.getName())
-          .replace("<columns>", this.columns)
+          .replace("<columns>", this.columns);
 }
 

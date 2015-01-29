@@ -163,7 +163,7 @@ Goodel.Table.prototype._buildSearchConditions = function (searchHash) {
   for (var key in searchHash) {
     var searchColumn = ALPHABET[this.columnMap[key] - 1];
 
-    if (searchColumn == undefined) this._throwBadAttrMsg(key);
+    if (searchColumn === undefined) this._throwBadAttrMsg(key);
 
     var condition = '<table>!<searchCol>2:<searchCol><lastRow> = "<searchVal>"'
                       .replace("<table>", this.sheet.getName())
