@@ -56,7 +56,7 @@ Given a sheet named "Logicians" and the table below starting at the origin A1:
 
 
 ```js
-// "Students" is the name of a sheet in the active spreadsheet
+// "Logicians" is the name of a sheet in the active spreadsheet
 var Logician = Goodel("Logicians");
 
 var alf = Logician.findBy({ firstName: "Alfred", lastName: "Tarski" });
